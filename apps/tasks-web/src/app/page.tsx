@@ -1,10 +1,122 @@
-import Image from "next/image";
 
-export default function Home() {
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import TaskList from './components/task/TaskList';
+import TaskForm from './components/task/TaskForm';
+import api from './lib/api';
+import TaskSearch from './components/task/TaskSearch';
+
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
+export default function HomePage() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [title, setTitle] = useState('');
+  const [loading, setLoading] = useState(true);
+  //setTasks
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const fetchTasks = async () => {
+    try {
+      const res = await api.get('/tasks');
+      console.log(res.data);
+
+      setTasks(res.data);
+    } catch (err) {
+      console.error('Erro ao buscar tarefas', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const handleAddTask = async () => {
+    if (!title.trim()) return;
+    try {
+      const res = await api.post('/tasks', {
+        title,
+        completed: false,
+      });
+      setTasks(prev => [res.data, ...prev]);
+      setTitle('');
+    } catch (err) {
+      console.error('Erro ao adicionar tarefa', err);
+    }
+  };
+
+  const handleToggle = async (id: string) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    try {
+      const res = await api.patch(`/tasks/${id}`, {
+        completed: !task.completed,
+      });
+      setTasks(prev =>
+        prev.map(t => (t.id === id ? res.data : t))
+      );
+    } catch (err) {
+      console.error('Erro ao atualizar tarefa', err);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/tasks/${id}`);
+      setTasks(prev => prev.filter(t => t.id !== id));
+    } catch (err) {
+      console.error('Erro ao deletar tarefa', err);
+    }
+  };
+
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      Hello Turborepo!
-      
-    </div>
+    <main className="p-6 max-w-xl mx-auto">
+      <div
+        className="mb-2 text-center text-white md:mb-10 w-full bg-gray-900 rounded-md p-5"
+      >
+        <svg
+          className="w-16 h-16 mx-auto text-green-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"
+          ></path>
+        </svg>
+
+        <h1 className="text-3xl font-bold text-white mb-5">Todo List</h1>
+        <p className="text-gray-400">
+          Adicione, busque, edite e remove suas tarefas
+        </p>
+      </div>
+
+
+      {loading ? (
+        <p className="text-gray-500">Carregando tarefas...</p>
+      ) : (
+        <>
+          <TaskSearch
+            tasks={tasks}
+            setTasks={setTasks}
+          /> 
+          <br />
+          <TaskList tasks={tasks} onToggle={handleToggle} onDelete={handleDelete} />
+        </>
+      )}
+      <TaskForm title={title} setTitle={setTitle} onSubmit={handleAddTask} />
+    </main>
   );
 }
