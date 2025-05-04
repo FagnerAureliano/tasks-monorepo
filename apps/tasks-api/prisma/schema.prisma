@@ -13,17 +13,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
   password String
-  posts Post[]
+  tasks    Task[]
 }
 
-model Post {
+model Task {
   id        Int     @id @default(autoincrement())
-  title     String 
+  title     String
   completed Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
