@@ -7,7 +7,8 @@ import { hash } from 'bcryptjs';
 @Injectable()
 export class UsersService {
 
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
+
   async create(createUserDto: CreateUserDto) {
     const encryptedPassword = await hash(
       createUserDto.password,
