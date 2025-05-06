@@ -5,6 +5,7 @@ import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 
+    
     @ApiProperty({
         description: 'The id of the user', 
         example: '', 
@@ -14,7 +15,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsString({ message: 'Id must be a string' })
     @IsNotEmpty({ message: 'Id is required' }) 
     id: string;
-    
+
     @ApiProperty({
         description: 'The email of the user',
         example: 'user@example.com',
