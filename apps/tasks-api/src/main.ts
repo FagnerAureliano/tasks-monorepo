@@ -1,4 +1,3 @@
-
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -8,9 +7,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('CRUD Tasks API')
-    .setDescription('The tasks API description')
-    .setVersion('1.0')
-    .addTag('tasks')
+    .setDescription('The CRUD Tasks API for managing tasks with NestJS')
+    .setVersion('1.0') 
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
