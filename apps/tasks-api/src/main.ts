@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app: any = await NestFactory.create(AppModule);
-
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('CRUD Tasks API')
     .setDescription('The CRUD Tasks API for managing tasks with NestJS')
@@ -13,6 +13,6 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
