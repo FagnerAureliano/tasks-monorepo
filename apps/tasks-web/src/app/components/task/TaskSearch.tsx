@@ -20,7 +20,7 @@ const TaskSearch: React.FC<TaskSearchProps> = ({ tasks, setTasks }) => {
     React.useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const res = await fetch(`/api/tasks?search=${searchTerm}`);
+                const res = await fetch(`/tasks?search=${searchTerm}`);
                 const data = await res.json();
                 setTasks(data);
             } catch (err) {
