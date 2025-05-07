@@ -3,17 +3,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { hash } from 'bcryptjs';
+import { FindUserDto } from './dto/find-user.dto';
 
 @Injectable()
 export class UsersService {
-
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const encryptedPassword = await hash(
-      createUserDto.password,
-      10,
-    );
+    const encryptedPassword = await hash(createUserDto.password, 10);
 
     const userExists = await this.prisma.user.findUnique({
       where: {
@@ -65,7 +62,6 @@ export class UsersService {
       data: updateUserDto,
     });
     return updatedUser;
-
   }
 
   async remove(id: string) {
@@ -83,5 +79,18 @@ export class UsersService {
       },
     });
     return { message: 'User deleted successfully' };
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 }
