@@ -22,7 +22,7 @@ export class TasksService {
   }
 
   async findOne(id: number) {
-    const task = await this.prisma.task.findUnique({
+    const task = await this.prisma.task.findFirst({
       where: {
         id,
       },
@@ -68,5 +68,17 @@ export class TasksService {
       },
     });
     return deletedTask;
+  }
+  
+  async findByUserId(userId: string) {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+    const tasks = await this.prisma.task.findMany({
+      where: {
+        authorId: userId,
+      },
+    });
+    return tasks;
   }
 }
