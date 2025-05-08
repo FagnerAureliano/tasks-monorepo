@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable */
+
 import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
 import {
@@ -33,6 +33,7 @@ export default function HomePage() {
         setTasks(data);
       } catch (err) {
         toast.error("Error loading tasks");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -52,6 +53,7 @@ export default function HomePage() {
       setTitle("");
       toast.success("Task added successfully");
     } catch (err) {
+      console.error(err);	
       toast.error("Error adding task");
     }
   };
@@ -65,6 +67,7 @@ export default function HomePage() {
 
       setTasks((prev) => prev.map((t) => (t.id === task.id ? updated : t)));
     } catch (err) {
+      console.error(err);
       toast.error("Error updating task");
     }
   };
@@ -76,6 +79,7 @@ export default function HomePage() {
       setTasks((prev) => prev.filter((t) => t.id !== id));
       toast.success("Task deleted successfully");
     } catch (err) {
+      console.error(err);
       toast.error("Error deleting task");
     }
   };
@@ -99,6 +103,7 @@ export default function HomePage() {
       setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
       toast.success("Task updated successfully");
     } catch (err) {
+      console.error(err);
       toast.error("Error updating task");
     }
   };
