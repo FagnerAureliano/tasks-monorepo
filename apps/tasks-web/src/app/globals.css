@@ -41,3 +41,25 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out forwards;
 }
+
+.scrollbar-thin {
+  scrollbar-color: var(--foreground) var(--background);
+  scrollbar-width: thin;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--foreground);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+.scrollbar-thin::-webkit-scrollbar-corner {
+  background-color: var(--background);
+}
+.scrollbar-thin::-webkit-scrollbar-button {
+  background-color: var(--background);
+}
