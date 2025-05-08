@@ -173,7 +173,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:postgres@localhost:5432/tasksdb?pool_timeout=5&sslmode=prefer&connect_timeout=10&application_name=prisma"
+        "value": "postgresql://neondb_owner:npg_38vMYkuihrbm@ep-long-poetry-acsuygb7-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require"
       }
     }
   },

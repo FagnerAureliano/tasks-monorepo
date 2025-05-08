@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, register } from "../lib/service/login/loginService";
+import { login, register } from "../lib/service/login/loginService"; 
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    try {
+   
       if (isRegistering) {
         await register(email, password, name);
         const response = await login(email, password);
@@ -36,11 +36,9 @@ export default function LoginPage() {
         localStorage.setItem("token", response.access_token);
         router.push("/tasks");
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Erro ao processar requisição");
-    } finally {
+     
       setLoading(false);
-    }
+ 
   };
 
   return (

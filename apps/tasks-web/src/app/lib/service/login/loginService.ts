@@ -1,5 +1,4 @@
-import api, { removeToken } from "@/app/lib/auth/api";
-import { getUserIdFromToken } from "@/app/lib/auth/auth";
+import api, { removeToken } from "@/app/lib/auth/api"; 
 
 export type LoginRequest = {
   email: string;

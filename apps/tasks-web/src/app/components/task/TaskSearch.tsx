@@ -1,11 +1,5 @@
 import React from 'react';
 
-interface Task {
-    id: string;
-    title: string;
-    completed: boolean;
-}
-
 interface TaskSearchProps {
     handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
