@@ -19,8 +19,7 @@ export class CreateUserDto {
     required: true,
     type: String,
   })
-  @IsString({ message: 'Name must be a string' })
-  @IsNotEmpty({ message: 'Name is required' })
+  @IsString({ message: 'Name must be a string' }) 
   @MinLength(3, { message: 'Name must be at least 3 characters long' })
   name: string;
 
