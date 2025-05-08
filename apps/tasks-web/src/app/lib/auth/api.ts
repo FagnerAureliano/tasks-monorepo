@@ -33,7 +33,8 @@ export const setToken = (token: string) => {
 };
 export const removeToken = () => {
   localStorage.removeItem("token");
-  delete api.defaults.headers.common["Authorization"];
+  delete api.defaults.headers.common["Authorization"]; 
+  window.location.href = "/login"; // Redirect to login page
 };
 
 export default api;

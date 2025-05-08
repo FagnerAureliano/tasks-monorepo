@@ -66,3 +66,9 @@ export const searchTaskByTitle = async (title: string): Promise<Task[]> => {
   const response = await api.get<Task[]>(`/tasks/title/${title}`);
   return response.data;
 };
+
+export const updateTask = async (task: Task): Promise<Task> => {
+  
+  const response = await api.put<Task>(`/tasks/${task.id}`, task);
+  return response.data;
+};
