@@ -17,5 +17,11 @@
       "cache": false,
       "persistent": true
     }
-  }
+  },
+  "globalEnv": [
+    "DATABASE_URL",
+    "JWT_SECRET",
+    "JWT_EXPIRATION",
+    "NEXT_PUBLIC_API_URL"
+  ]
 }
