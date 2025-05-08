@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'; 
-import { addTask, deleteTask, fetchTasks, Task, toggleTask } from '../lib/service/task/taskService';
+import { addTask, deleteTask, fetchTasks, searchTaskByTitle, Task, toggleTask } from '../lib/service/task/taskService';
 import TaskForm from '../components/task/TaskForm';
 import TaskList from '../components/task/TaskList';
+import TaskSearch from '../components/task/TaskSearch';
  
 
 export default function HomePage() {
@@ -56,6 +57,23 @@ export default function HomePage() {
     }
   };
 
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value;
+    if (!searchTerm) {
+      setLoading(true);
+      const data = await fetchTasks();
+      setTasks(data);
+      setLoading(false);
+      return;
+    }
+  
+    const response = await searchTaskByTitle(searchTerm);
+    console.log('response', response);
+  
+    setTasks(response); // << ESTA LINHA ESTAVA FALTANDO
+  };
+  
+
   return (
     <main className="p-6 max-w-xl mx-auto">
     <div
@@ -84,10 +102,11 @@ export default function HomePage() {
 
 
     {loading ? (
-      <p className="text-gray-500">Carregando tarefas...</p>
+      <p className="text-gray-500 pb-4">Carregando tarefas...</p>
     ) : (
       <>
-       
+        <TaskSearch handleSearch={ handleSearch} />
+        <br />
         <TaskList tasks={tasks} onToggle={handleToggle} onDelete={handleDelete} />
       </>
     )}

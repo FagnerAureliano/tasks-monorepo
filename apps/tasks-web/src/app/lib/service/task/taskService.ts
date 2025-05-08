@@ -51,14 +51,8 @@ export const toggleTask = async (
   const taskUpdateRequest: TaskUpdateRequest = {
     completed,
   };
-  console.log("taskUpdateRequest", taskUpdateRequest);
-  console.log("id", id);
-  
-  const response = await api.put<Task>(
-    `/tasks/${id}`,
-    taskUpdateRequest
-  );
-  return response.data ;
+  const response = await api.put<Task>(`/tasks/${id}`, taskUpdateRequest);
+  return response.data;
 };
 export const deleteTask = async (id: string): Promise<void> => {
   await api.delete(`/tasks/${id}`);
@@ -66,4 +60,9 @@ export const deleteTask = async (id: string): Promise<void> => {
 export const deleteAllTasks = async (): Promise<void> => {
   const userId = getUserIdFromToken();
   await api.delete(`/tasks/${userId}`);
+};
+
+export const searchTaskByTitle = async (title: string): Promise<Task[]> => {
+  const response = await api.get<Task[]>(`/tasks/title/${title}`);
+  return response.data;
 };
