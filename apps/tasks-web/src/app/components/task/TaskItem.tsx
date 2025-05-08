@@ -1,6 +1,9 @@
+'use client';
+
 import { Task } from '@/app/lib/service/task/taskService';
-import React from 'react';
- 
+import React, { useState } from 'react';
+import ConfirmDialog from '../ui/ConfirmDialog';
+
 interface TaskItemProps {
   task: Task;
   onToggle: (task: Task) => void;
@@ -8,32 +11,39 @@ interface TaskItemProps {
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleConfirmDelete = () => {
+    onDelete(task.id);
+    setShowConfirm(false);
+  };
+
   return (
-    <li className="flex justify-between items-center py-2 border-b bg-gray-300 rounded-sm">
-      <div className="flex items-center px-4"  onClick={() => onToggle(task)}>
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={() => onToggle(task)}
-          className="mr-2 cursor-pointer"
-        />
-        <label
-          htmlFor={task.id}
-          className={`cursor-pointer ${
-            task.completed ? 'line-through text-gray-500' : ''
-          }`}
-         
-        >
-          {task.title}
-        </label>
-      </div>
-      
-      <button className="focus:outline-none pr-3" onClick={() => onDelete(task.id)}>
+    <>
+      <li className="flex justify-between items-center py-2 bg-gray-400 hover:bg-gray-500 rounded-sm">
+        <div className="flex items-center px-4" onClick={() => onToggle(task)}>
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => onToggle(task)}
+            className="mr-2 cursor-pointer w-5 h-5"
+          />
+          <label
+            htmlFor={task.id}
+            className={`cursor-pointer text-gray-900 ${
+              task.completed ? 'line-through text-gray-500' : ''
+            }`}
+          >
+            {task.title}
+          </label>
+        </div>
+
+        <button className="focus:outline-none pr-3" onClick={() => setShowConfirm(true)}>
           <svg
-            className="ml-3 h-4 w-4 text-gray-500 hover:text-red-600"
+            className="ml-3 h-5 w-5 text-gray-600 hover:text-red-500"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="currentColor" 
+            stroke="currentColor"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -44,7 +54,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
             />
           </svg>
         </button>
-    </li>
+      </li>
+
+      {showConfirm && (
+        <ConfirmDialog
+          message="Tem certeza que deseja excluir esta tarefa?"
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
+    </>
   );
 };
 
