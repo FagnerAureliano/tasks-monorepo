@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { SignInDto } from './dto/sign-in.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,12 +26,17 @@ export class AuthService {
     if (!userFound) {
       throw new UnauthorizedException('User not found');
     }
-    const payload = { email: user.email, sub: user.id, name: userFound.name };
+    const payload = {
+      email: user.email,
+      sub: userFound.id,
+      name: userFound.name,
+    };
+
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
-  async register(user: any) {
+  async register(user: CreateUserDto) {
     const existingUser = await this.usersService.findByEmail(user.email);
     if (existingUser) {
       throw new UnauthorizedException('User already exists');
