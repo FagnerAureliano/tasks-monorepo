@@ -1,29 +1,25 @@
+import { jwtDecode } from 'jwt-decode'
+
 export const getToken = (): string | null => {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("token");
 };
-
 export const getUserIdFromToken = (): string | null => {
   const token = getToken();
   if (!token) return null;
-
-  const payload = token.split(".")[1];
   try {
-    const decoded = JSON.parse(atob(payload));
-    return decoded.sub;
+    const { sub } = jwtDecode<{ sub?: string }>(token);
+    return sub ?? null;
   } catch {
     return null;
   }
 };
 
-export const getUserFromToken = () => {
+export const getUserFromToken = <T = unknown>(): T | null => {
   const token = getToken();
   if (!token) return null;
-
-  const payload = token.split(".")[1];
   try {
-    const decoded = JSON.parse(atob(payload));
-    return decoded;
+    return jwtDecode<T>(token);
   } catch {
     return null;
   }

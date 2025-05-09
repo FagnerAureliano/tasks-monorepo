@@ -22,11 +22,15 @@ export default function HomePage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useAuth();
-  const user = getUserFromToken();
-
+  
   useEffect(() => {
+    const user = getUserFromToken() as { name: string };
+    if (user) {
+      setUserName(user.name);
+    }
     const load = async () => {
       try {
         const data = await fetchTasks();
@@ -110,45 +114,51 @@ export default function HomePage() {
 
   return (
     <>
-      <Navbar userName={user?.name} />
+      <Navbar userName={userName ? userName : "Guest"} />
       <main className="p-6 max-w-xl mx-auto">
-        <div className="mb-2 text-center text-white md:mb-10 w-full bg-gray-900 rounded-md p-5">
-          <svg
-            className="w-16 h-16 mx-auto text-green-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"
-            ></path>
-          </svg>
+      <section className="mb-6 text-center text-white bg-gray-900 rounded-md p-6 shadow-md">
+        <svg
+        className="w-16 h-16 mx-auto text-green-400 mb-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"
+        ></path>
+        </svg>
+        <h1 className="text-3xl font-bold mb-2">Todo List</h1>
+        <p className="text-gray-400">Add, search, edit and remove your tasks</p>
+      </section>
 
-          <h1 className="text-3xl font-bold text-white mb-5">Todo List</h1>
-          <p className="text-gray-400">
-            Add, search, edit and remove your tasks
-          </p>
-        </div>
-
-        {loading ? (
-          <p className="text-gray-500 pb-4">Carregando tarefas...</p>
-        ) : (
-          <>
-            <TaskSearch handleSearch={handleSearch} />
-            <br />
-            <TaskList
-              tasks={tasks}
-              onToggle={handleToggle}
-              onDelete={handleDelete}
-              onUpdate={handleUpdateTask}
-            />
-          </>
-        )}
+      <section className="mb-4">
         <TaskForm title={title} setTitle={setTitle} onSubmit={handleAddTask} />
+      </section>
+
+      <section>
+        {loading ? (
+        <div className="flex justify-center items-center py-8">
+          <span className="text-gray-500 animate-pulse">Loading tasks...</span>
+        </div>
+        ) : (
+        <>
+          <TaskSearch handleSearch={handleSearch} />
+          <div className="mt-4">
+          <TaskList
+            tasks={tasks}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+            onUpdate={handleUpdateTask}
+          />
+          </div>
+        </>
+        )}
+      </section>
       </main>
     </>
   );

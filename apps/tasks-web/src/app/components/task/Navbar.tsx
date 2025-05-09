@@ -11,7 +11,7 @@ export default function Navbar({ userName }: NavbarProps) {
 
   return (
     <nav className="bg-auto text-white p-4 flex justify-between items-center shadow-md">
-      <div className="text-xl font-semibold">Hello, {userName}!</div>
+      <div className="text-xl font-semibold">Hello,  {userName || 'usuário'}!</div>
       <button
         className="flex cursor-pointer items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-[4px] pl-3 pr-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
         onClick={logout}
@@ -28,9 +28,9 @@ export default function Navbar({ userName }: NavbarProps) {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
           />
         </svg>
